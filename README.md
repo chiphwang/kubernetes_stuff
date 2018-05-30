@@ -195,5 +195,29 @@ spec:
           path: /var/lib/docker/containers
 
 
+# Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  namespace: development
+  name: developer
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["deployments", "replicasets", "pods"]
+  verbs: ["list", "get", "watch", "create", "update", "patch", "delete"]
+# You can use ["*"] for all verbs
 
-
+# RoleBindings
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: developer-role-binding
+  namespace: development
+subjects:
+  - kind: User
+    name: DevDan
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: developer
+  apiGroup: ""
